@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colorful Signup Form</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .signup-container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            text-align: center;
+            width: 350px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h2 {
+            color: #4a4a4a;
+            margin-bottom: 25px;
+            font-size: 28px;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .input-field {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 14px;
+            transition: all 0.3s;
+            box-sizing: border-box;
+        }
+        .input-field:focus {
+            border-color: #feb47b;
+            outline: none;
+            box-shadow: 0 0 8px rgba(254, 180, 123, 0.5);
+        }
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .btn:hover {
+            background: linear-gradient(to right, #feb47b, #ff7e5f);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+        .btn:active {
+            transform: translateY(0);
+        }
+        .error {
+            color: #ff4757;
+            font-size: 13px;
+            display: none;
+            text-align: left;
+            margin-left: 15px;
+            margin-top: -5px;
+            margin-bottom: 5px;
+        }
+        .input-container {
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .input-container i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+        .input-field.with-icon {
+            padding-left: 40px;
+        }
+        .terms {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            font-size: 13px;
+            color: #666;
+        }
+        .terms input {
+            margin-right: 10px;
+        }
+        .terms a {
+            color: #ff7e5f;
+            text-decoration: none;
+        }
+        .login-link {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+        .login-link a {
+            color: #ff7e5f;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .name-fields {
+            display: flex;
+            gap: 10px;
+        }
+        .name-fields .input-container {
+            flex: 1;
+        }
+        .password-strength {
+            height: 4px;
+            background: #eee;
+            border-radius: 2px;
+            margin: 5px 15px 10px;
+            overflow: hidden;
+        }
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            background: #ff4757;
+            transition: width 0.3s, background 0.3s;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <form action="connect.php" method="post">
+    <div class="signup-container">
+        <h2>Create Account</h2>
+        
+        <div class="name-fields">
+            <div class="input-container">
+                <i class="fas fa-user"></i>
+                <input type="text" id="firstname" class="input-field with-icon" placeholder="First Name" name="firstname">
+            </div>
+            <div class="input-container">
+                <i class="fas fa-user"></i>
+                <input type="text" id="lastname" class="input-field with-icon" placeholder="Last Name" name="lastname">
+            </div>
+        </div>
+        
+        <div class="input-container">
+            <i class="fas fa-envelope"></i>
+            <input type="email" id="email" class="input-field with-icon" placeholder="Email Address" name="email">
+        </div>
+        <span id="email-error" class="error">Valid email is required</span>
+        
+        <div class="input-container">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" class="input-field with-icon" placeholder="Password" oninput="checkPasswordStrength()" name="password">
+        </div>
+        <div class="password-strength">
+            <div class="password-strength-bar" id="password-strength-bar"></div>
+        </div>
+        <span id="pass-error" class="error">Password must be at least 8 characters</span>
+        
+        <div class="input-container">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="confirm-password" class="input-field with-icon" placeholder="Confirm Password" name="confirm-password">
+        </div>
+        <span id="confirm-error" class="error">Passwords don't match</span>
+        
+        <div class="terms">
+            <input type="checkbox" id="agree-terms">
+            <label for="agree-terms">I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></label>
+        </div>
+        <span id="terms-error" class="error">You must agree to the terms</span>
+        
+        <button class="btn" onclick="validateForm()">Sign Up</button>
+        
+        <div class="login-link">
+            Already have an account? <a href="#">Login</a>
+        </div>
+    </div>
+</form>
+    
+    <script>
+        function validateForm() {
+            let isValid = true;
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirm-password").value;
+            const agreeTerms = document.getElementById("agree-terms").checked;
+            
+            // Email validation
+            const emailError = document.getElementById("email-error");
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                emailError.style.display = "block";
+                isValid = false;
+            } else {
+                emailError.style.display = "none";
+            }
+            
+            // Password validation
+            const passError = document.getElementById("pass-error");
+            if (password.length < 8) {
+                passError.style.display = "block";
+                isValid = false;
+            } else {
+                passError.style.display = "none";
+            }
+            
+            // Confirm password validation
+            const confirmError = document.getElementById("confirm-error");
+            if (password !== confirmPassword) {
+                confirmError.style.display = "block";
+                isValid = false;
+            } else {
+                confirmError.style.display = "none";
+            }
+            
+            // Terms validation
+            const termsError = document.getElementById("terms-error");
+            if (!agreeTerms) {
+                termsError.style.display = "block";
+                isValid = false;
+            } else {
+                termsError.style.display = "none";
+            }
+            
+            if (isValid) {
+                const btn = document.querySelector('.btn');
+                btn.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    btn.style.transform = 'scale(1)';
+                    alert("Account created successfully! 🎉");
+                }, 200);
+            }
+        }
+        
+        function checkPasswordStrength() {
+            const password = document.getElementById("password").value;
+            const strengthBar = document.getElementById("password-strength-bar");
+            let strength = 0;
+            
+            if (password.length > 0) strength += 20;
+            if (password.length >= 8) strength += 20;
+            if (/[A-Z]/.test(password)) strength += 20;
+            if (/[0-9]/.test(password)) strength += 20;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 20;
+            
+            strengthBar.style.width = strength + '%';
+            
+            // Change color based on strength
+            if (strength < 40) {
+                strengthBar.style.background = '#ff4757'; // Weak (red)
+            } else if (strength < 80) {
+                strengthBar.style.background = '#ffa502'; // Medium (orange)
+            } else {
+                strengthBar.style.background = '#2ed573'; // Strong (green)
+            }
+        }
+        
+        // Add focus effects
+        document.querySelectorAll('.input-field').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.querySelector('i').style.color = '#ff7e5f';
+            });
+            input.addEventListener('blur', function() {
+                this.parentElement.querySelector('i').style.color = '#888';
+            });
+        });
+    </script>
+</body>
+</html>
